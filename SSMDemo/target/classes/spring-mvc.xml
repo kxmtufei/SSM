@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:Context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+    <!-- 配置视图解析器           controller类的中方法，可以返回视图名称    welcome 进过视图解析器配置后变成 /welcome.jsp     -->
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <!-- 前缀    /表示当前路径从项目的根路径开始-->
+        <property name="prefix" value="/WEB-INF/jsp/" />
+        <!-- 后缀 -->
+        <property name="suffix" value=".jsp" />
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+
+    </bean>
+
+    <!-- 采用文件扫描方式配置控制 springMVC的自动包扫描只扫controller -->
+    <Context:component-scan base-package="com.wcc.controller"/>
+
+    <!-- 让所有注解为controller的类的方法都进入处理器适配器-->
+    <mvc:annotation-driven/>
+    <!-- 配置注解的处理器映射器和处理器适配器
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>-->
+    <!-- 先后顺序不能改变！！  -->
+    <!-- 静态资源不被拦截 -->
+    <!--对静态资源文件的访问 -->
+    <mvc:resources mapping="/static/**" location="/static/" />
+
+    <!-- 处理器适配器找不到的方法都是属于静态资源，不进入前端控制器
+    <mvc:default-servlet-handler/>
+    -->
+
+    <!-- 访问静态资源文件 -->
+    <!-- <mvc:default-servlet-handler/> 需要在web.xml中配置
+
+    <mvc:resources mapping="/images/**" location="/images/" />
+    <mvc:resources mapping="/css/**" location="/css/" />
+    <mvc:resources mapping="/js/**" location="/js/" />
+    <mvc:resources mapping="/imgdata/**" location="/imgdata/" />
+    -->
+
+    <!-- 定义拦截器
+    <mvc:interceptors>-->
+        <!-- 直接定义拦截所有请求
+        <bean class="com.wxisme.ssm.interceptor.IdentityInterceptor"></bean>-->
+        <!-- <mvc:interceptor>
+            拦截所有路径的请求   包括子路径
+            <mvc:mapping path="/**"/>
+            <bean class="com.wxisme.ssm.interceptor.IdentityInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+</beans>
